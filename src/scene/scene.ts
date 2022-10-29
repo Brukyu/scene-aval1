@@ -8,10 +8,12 @@ import {
   MeshToonMaterial,
   PlaneGeometry,
   Color,
+  PlaneGeometry,
+  CylinderGeometry,
 } from "three"
-import { renderer, updateRenderer } from "/src/core/renderer"
+import { renderer, updateRenderer } from "../core/renderer"
 
-import { gui } from "/src/core/gui"
+import { gui } from "../core/gui"
 
 export const scene = new Scene()
 
@@ -36,23 +38,105 @@ directionalLight.position.set(0.25, 2, 2.25)
 scene.add(directionalLight)
 
 const PARAMS = {
-  color: "#5EDCAE",
+  color: "#af0e10",
+  color1: "#ffffff", 
+  color2: "#66dcf2",
+  color3: "d8d8d8"
 }
 
 const sphere = new Mesh(
   new SphereGeometry(0.75, 32, 32),
+  new MeshToonMaterial({
+    color: new Color(PARAMS.color1),
+    wireframe: false,
+  })
+)
+
+sphere.position.set(0, 2 , 0)
+sphere.scale.set(3,1,1)
+sphere.castShadow = true 
+
+const plane2 = new Mesh(
+  new PlaneGeometry(0.5, 50, 32),
   new MeshToonMaterial({
     color: new Color(PARAMS.color),
     wireframe: false,
   })
 )
 
-sphere.position.set(0, 2, 0)
-sphere.castShadow = true
+plane2.position.set(1.9, 2.5 , 0)
+plane2.scale.set(1,0.01,1)
+plane2.rotation.set(0,0 , -4)
+plane2.castShadow = true
+
+const plane3 = new Mesh(
+  new PlaneGeometry(1, 32, 32),
+  new MeshToonMaterial({
+    color: new Color(PARAMS.color),
+    wireframe: false,
+  })
+)
+
+
+plane3.position.set(1.75, 2 , 0.4)
+plane3.scale.set(1,0.02,1)
+plane3.rotation.set(-Math.PI / 2,0 , -Math.PI /6)
+plane3.castShadow = true
+
+const plane4 = new Mesh(
+  new PlaneGeometry(1, 32, 32),
+  new MeshToonMaterial({
+    color: new Color(PARAMS.color),
+    wireframe: false,
+  })
+)
+
+plane4.position.set(1.75, 2 , -0.4)
+plane4.scale.set(1,0.02,1)
+plane4.rotation.set(-Math.PI / 2,0 , Math.PI /6)
+plane4.castShadow = true
 
 const sphereCtrls = gui.addFolder({
   title: "Sphere",
 })
+
+const plane5 = new Mesh(
+  new PlaneGeometry(0.5, 50, 32),
+  new MeshToonMaterial({
+    color: new Color(PARAMS.color),
+    wireframe: false,
+  })
+)
+
+plane5.position.set(1.9, 1.5 , 0)
+plane5.scale.set(1,0.01,1)
+plane5.rotation.set(0,0 , 4)
+plane5.castShadow = true
+
+const cylinder = new Mesh(
+  new CylinderGeometry(1, 0.4, 2),
+  new MeshToonMaterial({
+    color: new Color(PARAMS.color),
+    wireframe: false,
+  })
+)
+
+cylinder.position.set(-0.4, 1.2 , 0)
+cylinder.scale.set(0.4,0.2,0.75)
+cylinder.rotation.set(0,-Math.PI / 2,0)
+cylinder.castShadow = true
+
+const plane6 = new Mesh(
+  new PlaneGeometry(0.15, 10, 32),
+  new MeshToonMaterial({
+    color: new Color(PARAMS.color2),
+    wireframe: false,
+  })
+)
+
+plane6.position.set(-0.6, 1.2 , 0.5)
+plane6.scale.set(1,0.01,1)
+plane6.rotation.set(-Math.PI / 1,0,0)
 
 sphereCtrls.addInput(sphere.position, "x", {
   label: "pos x",
@@ -79,6 +163,12 @@ sphereCtrls.addInput(PARAMS, "color").on("change", (e) => {
 sphereCtrls.addInput(sphere.material, "wireframe")
 
 scene.add(sphere)
+scene.add(plane2)
+scene.add(plane3)
+scene.add(plane4)
+scene.add(plane5)
+scene.add(cylinder)
+scene.add(plane6)
 
 const plane = new Mesh(
   new PlaneGeometry(10, 10, 10, 10),
@@ -90,6 +180,7 @@ const plane = new Mesh(
 plane.receiveShadow = true
 plane.rotation.set(-Math.PI / 2, 0, 0)
 scene.add(plane)
+
 
 export function updateScene() {
   updateRenderer()
