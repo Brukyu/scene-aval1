@@ -73,8 +73,8 @@ pointlightCtrls.addInput(pointlight.position, "x", {
 
 pointlightCtrls.addInput(pointlight.position, "y", {
   label: "dir y",
-  min: -16,
-  max: 16,
+  min: -15,
+  max: 15,
   step: 0.1,
 })
 
